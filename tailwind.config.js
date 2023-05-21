@@ -7,9 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily:{
-        sans:"var(--font-roboto)",
-        alt:"var(--font-baiJamJuree)"
+      fontFamily: {
+        sans: 'var(--font-roboto)',
+        alt: 'var(--font-baiJamJuree)',
       },
       colors: {
         gray: {
@@ -37,7 +37,7 @@ module.exports = {
           900: '#372560',
         },
         green: {
-           50: '#e6fbef',
+          50: '#e6fbef',
           100: '#b1f1ce',
           200: '#8cebb6',
           300: '#57e295',
@@ -67,5 +67,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
 }

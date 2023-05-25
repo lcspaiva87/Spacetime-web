@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use client'
 import { FormEvent, useState } from 'react'
 import Cookie from 'js-cookie'
@@ -19,24 +20,28 @@ export function EditMemoryForm({ coverUrls, id, content, isPublic }: Memory) {
 
   async function handleCreateMemory(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+
     const formData = new FormData(event.currentTarget)
+
+    const fileToUpload = formData.get('coverUrl')
     let coverUrl = ''
-    const file = formData.get('coverUrl')
-    if (file === null || file === undefined) {
-      const fileToUpload = formData.get('coverUrl')
-      if (fileToUpload) {
-        const uploadFormData = new FormData()
-        uploadFormData.set('file', fileToUpload)
-        const uploadResponse = await api.post('/upload', uploadFormData)
-        coverUrl = uploadResponse.data.fileUrl
-      }
+
+    const fileField = event.currentTarget.querySelector(
+      'input[name="coverUrl"]',
+    )
+
+    if (fileField && fileField.files.length > 0) {
+      const uploadFormData = new FormData()
+      uploadFormData.set('file', fileToUpload)
+
+      const uploadResponse = await api.post('/upload', uploadFormData)
+
+      coverUrl = uploadResponse.data.fileUrl
     } else {
-      // eslint-disable-next-line no-self-assign
       coverUrl = coverUrls
     }
-
     const token = Cookie.get('token')
-    console.log('coverUrl', coverUrl)
+
     await api.put(
       `/memories/${id}`,
       {
@@ -50,7 +55,6 @@ export function EditMemoryForm({ coverUrls, id, content, isPublic }: Memory) {
         },
       },
     )
-
     router.push('/')
   }
   const handleCheckboxChange = () => {

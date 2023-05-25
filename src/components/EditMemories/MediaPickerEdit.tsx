@@ -5,7 +5,7 @@ export function MediaPickerEdit({ media }: { media: string }) {
 
   function onFileSelected(event: ChangeEvent<HTMLInputElement>) {
     const { files } = event.target
-    if (!files) {
+    if (!files || files.length === 0) {
       return
     }
 

@@ -1,13 +1,15 @@
-import { NewMemoryForm } from '@/components/NewMemoryForm'
 import { ChevronLeft } from 'lucide-react'
 import { cookies } from 'next/headers'
 import { api } from '@/lib/api'
 import Link from 'next/link'
+import { EditMemoryForm } from '@/components/EditMemories'
 interface Memory {
   id: string
   coverUrl: string
-  excerpt: string
-  createdAt: string
+  content: string
+  isPublic: boolean
+  createAt: string
+  userId: string
 }
 export default async function EditMemory({
   params,
@@ -21,8 +23,16 @@ export default async function EditMemory({
       Authorization: `Bearer ${token}`,
     },
   })
-  const memories: Memory[] = response.data
-  console.log(memories)
+  const memories: Memory = response.data
+
+  const { id, coverUrl, createdAt, isPublic, content } = {
+    id: memories.id,
+    coverUrl: memories.coverUrl,
+    isPublic: memories.isPublic,
+    createdAt: memories.createAt,
+    content: memories.content,
+  }
+
   return (
     <div className="flex flex-1 flex-col gap-4">
       <Link
@@ -32,7 +42,13 @@ export default async function EditMemory({
         <ChevronLeft className="h-4 w-4" />
         voltar a timeline
       </Link>
-      <NewMemoryForm />
+      <EditMemoryForm
+        coverUrls={coverUrl}
+        id={id}
+        createAt={createdAt}
+        content={content}
+        isPublic={isPublic}
+      />
     </div>
   )
 }

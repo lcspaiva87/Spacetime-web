@@ -6,6 +6,7 @@ import ptBR from 'dayjs/locale/pt-br'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Plus } from 'lucide-react'
+import { DeleteMemory } from '@/components/DeleteMemory'
 
 dayjs.locale(ptBR)
 
@@ -41,10 +42,7 @@ export default async function Home() {
     <div className="flex flex-col gap-10 p-8">
       <div className="flex justify-end">
         <Link
-          href={{
-            pathname: '/memories/new',
-            query: { memories: JSON.stringify(memories) },
-          }}
+          href="/memories/new"
           className="flex items-center gap-1 text-sm text-gray-200 hover:text-gray-100"
         >
           <Plus className="h-4 w-4" />
@@ -67,13 +65,16 @@ export default async function Home() {
             <p className="text-lg leading-relaxed text-gray-100">
               {memory.excerpt}
             </p>
-            <Link
-              href={`/memories/${memory.id}`}
-              className="flex items-center gap-2 text-sm text-gray-200 hover:text-gray-100"
-            >
-              Ler mais
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            <div className="flex justify-between">
+              <Link
+                href={`/memories/${memory.id}`}
+                className="flex items-center gap-2 text-sm text-gray-200 hover:text-gray-100"
+              >
+                Ler mais
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <DeleteMemory id={`${memory.id}`} />
+            </div>
           </div>
         )
       })}

@@ -17,6 +17,7 @@ interface Memory {
 export function EditMemoryForm({ coverUrls, id, content, isPublic }: Memory) {
   const router = useRouter()
   const [isCheck, setIscheck] = useState(isPublic)
+  const [file, setFile] = useState(null)
 
   async function handleCreateMemory(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -26,13 +27,13 @@ export function EditMemoryForm({ coverUrls, id, content, isPublic }: Memory) {
     const fileToUpload = formData.get('coverUrl')
     let coverUrl = ''
 
-    const fileField = event.currentTarget.querySelector(
+    const fileField: any = event.currentTarget.querySelector(
       'input[name="coverUrl"]',
     )
 
-    if (fileField && fileField.files.length > 0) {
+    if (fileField && fileField?.files.length > 0) {
       const uploadFormData = new FormData()
-      uploadFormData.set('file', fileToUpload)
+      uploadFormData.set('file', fileToUpload || '')
 
       const uploadResponse = await api.post('/upload', uploadFormData)
 

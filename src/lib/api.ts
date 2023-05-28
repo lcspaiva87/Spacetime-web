@@ -1,5 +1,5 @@
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_GITHUB_CLIENTE,
+  baseURL: ' http://192.168.100.38:3333',
 })

@@ -5,6 +5,7 @@ import { FormEvent } from 'react'
 import { api } from '@/lib/api'
 import Cookie from 'js-cookie'
 import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
 
 export function NewMemoryForm() {
   const router = useRouter()
@@ -29,7 +30,7 @@ export function NewMemoryForm() {
 
     const token = Cookie.get('token')
 
-    await api.post(
+    const response = await api.post(
       '/memories',
       {
         coverUrl,
@@ -42,8 +43,12 @@ export function NewMemoryForm() {
         },
       },
     )
-
-    router.push('/')
+    if (response.status === 200) {
+      router.push('/')
+      toast.success('Memória criada com sucesso!')
+    } else {
+      toast.error('Erro ao tentar criar memória!')
+    }
   }
 
   return (

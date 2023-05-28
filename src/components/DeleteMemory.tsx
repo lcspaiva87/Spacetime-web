@@ -2,16 +2,29 @@
 import { Trash } from 'lucide-react'
 import { api } from '@/lib/api'
 import Cookie from 'js-cookie'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 export function DeleteMemory({ id }: { id: string }) {
+  const router = useRouter()
   async function handleDeleteMemory() {
     const token = Cookie.get('token')
+
     const response = await api.delete(`/memories/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-    return response
+
+    if (response.status === 200) {
+      router.push('/')
+      toast.success('Memória deletada com sucesso!')
+
+      return response
+    } else {
+      toast.error('Erro ao tentar apagar memória!')
+    }
   }
+
   return (
     <button
       onClick={handleDeleteMemory}
